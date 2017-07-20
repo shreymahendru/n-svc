@@ -29,6 +29,7 @@ class SvcApp {
     bootstrap() {
         if (this._isBootstrapped || !this._programRegistered)
             throw new n_exception_1.InvalidOperationException("bootstrap");
+        this._container.bootstrap();
         this._isBootstrapped = true;
         let program = this._container.resolve(this._programKey);
         program.run()
