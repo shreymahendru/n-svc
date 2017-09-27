@@ -1,3 +1,4 @@
 import { SvcApp } from "./svc-app";
 import { Program } from "./program";
-export { SvcApp, Program };
+import { Utils } from "./utils";
+export { SvcApp, Program, Utils };
