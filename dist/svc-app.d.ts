@@ -1,4 +1,4 @@
-import { ComponentInstaller } from "n-ject";
+import { ComponentInstaller } from "@nivinjoseph/n-ject";
 export declare class SvcApp {
     private readonly _container;
     private readonly _programKey;

@@ -1,4 +1,4 @@
-import "n-ext";
+import "@nivinjoseph/n-ext";
 import { RouteParam } from "./route-param";
 export declare class RouteInfo {
     private readonly _routeTemplate;

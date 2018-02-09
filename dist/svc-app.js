@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const n_ject_1 = require("n-ject");
-const n_exception_1 = require("n-exception");
-const n_defensive_1 = require("n-defensive");
+const n_ject_1 = require("@nivinjoseph/n-ject");
+const n_exception_1 = require("@nivinjoseph/n-exception");
+const n_defensive_1 = require("@nivinjoseph/n-defensive");
 // public
 class SvcApp {
     constructor() {

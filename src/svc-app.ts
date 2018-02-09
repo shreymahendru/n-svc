@@ -1,6 +1,6 @@
-import { Container, ComponentInstaller } from "n-ject";
-import { InvalidOperationException } from "n-exception";
-import { given } from "n-defensive";
+import { Container, ComponentInstaller } from "@nivinjoseph/n-ject";
+import { InvalidOperationException } from "@nivinjoseph/n-exception";
+import { given } from "@nivinjoseph/n-defensive";
 import { Program } from "./program";
 
 

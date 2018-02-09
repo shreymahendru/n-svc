@@ -1,6 +1,6 @@
-import { given } from "n-defensive";
-import "n-ext";
-import { InvalidArgumentException, ApplicationException, InvalidOperationException } from "n-exception";
+import { given } from "@nivinjoseph/n-defensive";
+import "@nivinjoseph/n-ext";
+import { InvalidArgumentException, ApplicationException, InvalidOperationException } from "@nivinjoseph/n-exception";
 import { HttpException } from "./http-exception";
 
 export class RouteParam
