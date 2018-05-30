@@ -34,7 +34,7 @@ class SvcApp {
         let program = this._container.resolve(this._programKey);
         program.run()
             .then(() => console.log("Program complete."))
-            .catch((err) => console.log("Program error:", err));
+            .catch((err) => console.error("Program error:", err));
     }
 }
 exports.SvcApp = SvcApp;
