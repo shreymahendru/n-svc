@@ -32,18 +32,16 @@
   "homepage": "https://github.com/nivinjoseph/n-svc#readme",
   "devDependencies": {
     "@types/mocha": "^2.2.48",
-    "@types/node": "^7.0.53",
-    "@types/sinon": "^1.16.35",
+    "@types/node": "^7.0.65",
     "mocha": "^3.2.0",
-    "sinon": "^2.0.0-pre.6",
     "ts-node": "^2.1.0",
     "tslint": "^4.5.1",
-    "typescript": "^2.7.1"
+    "typescript": "^2.8.3"
   },
   "dependencies": {
     "@nivinjoseph/n-defensive": "^1.0.17",
     "@nivinjoseph/n-exception": "^1.0.13",
     "@nivinjoseph/n-ext": "^1.0.24",
-    "@nivinjoseph/n-ject": "^1.0.11"
+    "@nivinjoseph/n-ject": "^1.0.21"
   }
 }
