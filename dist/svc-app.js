@@ -32,9 +32,11 @@ class SvcApp {
         this._container.bootstrap();
         this._isBootstrapped = true;
         let program = this._container.resolve(this._programKey);
+        const programType = program.getTypeName();
+        console.log(`Program ${programType} started.`);
         program.run()
-            .then(() => console.log("Program complete."))
-            .catch((err) => console.error("Program error:", err));
+            .then(() => console.log(`Program ${programType} complete.`))
+            .catch((err) => console.error(`Program ${programType} error:`, err));
     }
 }
 exports.SvcApp = SvcApp;
