@@ -51,8 +51,10 @@ export class SvcApp
         this._isBootstrapped = true;
         
         let program = this._container.resolve<Program>(this._programKey);
+        const programType = (<Object>program).getTypeName();
+        console.log(`Program ${programType} started.`);
         program.run()
-            .then(() => console.log("Program complete."))
-            .catch((err) => console.error("Program error:", err));
+            .then(() => console.log(`Program ${programType} complete.`))
+            .catch((err) => console.error(`Program ${programType} error:`, err));
     }
 }
