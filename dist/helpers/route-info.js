@@ -4,7 +4,6 @@ const n_defensive_1 = require("@nivinjoseph/n-defensive");
 require("@nivinjoseph/n-ext");
 const n_exception_1 = require("@nivinjoseph/n-exception");
 const route_param_1 = require("./route-param");
-// route format: /api/Product/{id:number}?{name?:string}&{all:boolean}
 class RouteInfo {
     constructor(routeTemplate) {
         this._routeParams = new Array();

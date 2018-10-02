@@ -15,6 +15,6 @@ export declare class RouteParam {
     constructor(routeParam: string);
     setOrder(order: number): void;
     parseParam(value: string): any;
-    private parseNumber(value);
-    private parseBoolean(value);
+    private parseNumber;
+    private parseBoolean;
 }

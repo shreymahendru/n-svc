@@ -2,9 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const route_info_1 = require("./helpers/route-info");
 const n_defensive_1 = require("@nivinjoseph/n-defensive");
-// public
-class Utils // static class
- {
+class Utils {
     static generateUrl(route, params, baseUrl) {
         n_defensive_1.given(route, "route").ensureHasValue().ensure(t => !t.isEmptyOrWhiteSpace());
         let url = route.trim();

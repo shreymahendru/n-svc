@@ -16,9 +16,9 @@ export declare class RouteInfo {
     constructor(routeTemplate: string);
     findRouteParam(key: string): RouteParam;
     generateUrl(values: any): string;
-    private populateRouteParams();
-    private extractTemplateParams(routeTemplate);
-    private generateVueRoute(routeTemplate);
-    private populatePathSegments();
-    private generateRouteKey();
+    private populateRouteParams;
+    private extractTemplateParams;
+    private generateVueRoute;
+    private populatePathSegments;
+    private generateRouteKey;
 }
