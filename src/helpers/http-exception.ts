@@ -2,6 +2,7 @@ import { Exception } from "@nivinjoseph/n-exception";
 import "@nivinjoseph/n-ext";
 import { given } from "@nivinjoseph/n-defensive";
 
+
 export class HttpException extends Exception
 {
     private readonly _statusCode: number;
