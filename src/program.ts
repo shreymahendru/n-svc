@@ -1,5 +1,6 @@
 // public
 export interface Program
 {
-    run(): Promise<void>;
+    start(): Promise<void>;
+    stop(): Promise<void>;
 }
