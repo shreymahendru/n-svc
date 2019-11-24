@@ -110,17 +110,29 @@ export class SvcApp
         this.configureStartup()
             .then(() =>
             {
+                const appEnv = ConfigurationManager.getConfig<string>("env");
+                const appName = ConfigurationManager.getConfig<string>("appInfo.name");
+                const appVersion = ConfigurationManager.getConfig<string>("appInfo.version");
+                const appDescription = ConfigurationManager.getConfig<string>("appInfo.description");
+
+                console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
+                
                 const p = this._program.start();
                 this.configureShutDown();
                 this._isBootstrapped = true;
+                console.log("SERVICE STARTED.");
                 return p;
             })
-            .then(() => this._logger.logInfo(`SERVICE COMPLETE.`))
-            .then(() => this.cleanUp())
-            .catch(async (err) =>
+            .then(() =>
             {
-                await this._logger.logWarning(`SERVICE ERROR!!!`);
-                await this._logger.logError(err);
+                console.log(`SERVICE COMPLETE.`);
+                return this.cleanUp();
+            })
+            .then(() => this.cleanUp())
+            .catch((err) =>
+            {
+                console.error(`SERVICE ERROR!!!`);
+                console.error(err);
             });
     }
     
@@ -132,7 +144,7 @@ export class SvcApp
     
     private async configureStartup(): Promise<void>
     {
-        await this._logger.logInfo(`SERVICE STARTING.`);
+        console.log(`SERVICE STARTING.`);
         this._program = this._container.resolve<Program>(this._programKey);
     }
     
@@ -156,11 +168,11 @@ export class SvcApp
         this._isShutDown = true;
 
         await this._program.stop();
-        await this._logger.logWarning(`SERVICE STOPPING (${signal}).`);
+        console.warn(`SERVICE STOPPING (${signal}).`);
 
         await this.cleanUp();   
 
-        await this._logger.logWarning(`SERVICE STOPPED (${signal}).`);
+        console.warn(`SERVICE STOPPED (${signal}).`);
         process.exit(0);    
     }
     
@@ -171,16 +183,16 @@ export class SvcApp
 
         this._isCleanUp = true;
         
-        await this._logger.logInfo("Dispose actions executing.");
+        console.log("Dispose actions executing.");
         try
         {
             await Promise.all(this._disposeActions.map(t => t()));
-            await this._logger.logInfo("Dispose actions complete.");
+            console.log("Dispose actions complete.");
         }
         catch (error)
         {
-            await this._logger.logWarning("Dispose actions error.");
-            await this._logger.logError(error);
+            console.warn("Dispose actions error.");
+            console.error(error);
         }
     }
 }
