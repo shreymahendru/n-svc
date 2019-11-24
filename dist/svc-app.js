@@ -78,17 +78,26 @@ class SvcApp {
         this.configureContainer();
         this.configureStartup()
             .then(() => {
+            const appEnv = n_config_1.ConfigurationManager.getConfig("env");
+            const appName = n_config_1.ConfigurationManager.getConfig("appInfo.name");
+            const appVersion = n_config_1.ConfigurationManager.getConfig("appInfo.version");
+            const appDescription = n_config_1.ConfigurationManager.getConfig("appInfo.description");
+            console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
             const p = this._program.start();
             this.configureShutDown();
             this._isBootstrapped = true;
+            console.log("SERVICE STARTED.");
             return p;
         })
-            .then(() => this._logger.logInfo(`SERVICE COMPLETE.`))
+            .then(() => {
+            console.log(`SERVICE COMPLETE.`);
+            return this.cleanUp();
+        })
             .then(() => this.cleanUp())
-            .catch((err) => __awaiter(this, void 0, void 0, function* () {
-            yield this._logger.logWarning(`SERVICE ERROR!!!`);
-            yield this._logger.logError(err);
-        }));
+            .catch((err) => {
+            console.error(`SERVICE ERROR!!!`);
+            console.error(err);
+        });
     }
     configureContainer() {
         this._container.bootstrap();
@@ -96,7 +105,7 @@ class SvcApp {
     }
     configureStartup() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this._logger.logInfo(`SERVICE STARTING.`);
+            console.log(`SERVICE STARTING.`);
             this._program = this._container.resolve(this._programKey);
         });
     }
@@ -114,9 +123,9 @@ class SvcApp {
                 return;
             this._isShutDown = true;
             yield this._program.stop();
-            yield this._logger.logWarning(`SERVICE STOPPING (${signal}).`);
+            console.warn(`SERVICE STOPPING (${signal}).`);
             yield this.cleanUp();
-            yield this._logger.logWarning(`SERVICE STOPPED (${signal}).`);
+            console.warn(`SERVICE STOPPED (${signal}).`);
             process.exit(0);
         });
     }
@@ -125,14 +134,14 @@ class SvcApp {
             if (this._isCleanUp)
                 return;
             this._isCleanUp = true;
-            yield this._logger.logInfo("Dispose actions executing.");
+            console.log("Dispose actions executing.");
             try {
                 yield Promise.all(this._disposeActions.map(t => t()));
-                yield this._logger.logInfo("Dispose actions complete.");
+                console.log("Dispose actions complete.");
             }
             catch (error) {
-                yield this._logger.logWarning("Dispose actions error.");
-                yield this._logger.logError(error);
+                console.warn("Dispose actions error.");
+                console.error(error);
             }
         });
     }
