@@ -10,7 +10,7 @@ export declare class SvcApp {
     private _program;
     private _isShutDown;
     private _isCleanUp;
-    readonly containerRegistry: Registry;
+    get containerRegistry(): Registry;
     constructor();
     useLogger(logger: Logger): this;
     useInstaller(installer: ComponentInstaller): this;
