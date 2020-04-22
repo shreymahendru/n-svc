@@ -111,9 +111,9 @@ export class SvcApp
             .then(() =>
             {
                 const appEnv = ConfigurationManager.getConfig<string>("env");
-                const appName = ConfigurationManager.getConfig<string>("appInfo.name");
-                const appVersion = ConfigurationManager.getConfig<string>("appInfo.version");
-                const appDescription = ConfigurationManager.getConfig<string>("appInfo.description");
+                const appName = ConfigurationManager.getConfig<string>("package.name");
+                const appVersion = ConfigurationManager.getConfig<string>("package.version");
+                const appDescription = ConfigurationManager.getConfig<string>("package.description");
 
                 console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
                 
