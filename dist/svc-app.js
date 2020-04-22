@@ -80,9 +80,9 @@ class SvcApp {
         this.configureStartup()
             .then(() => {
             const appEnv = n_config_1.ConfigurationManager.getConfig("env");
-            const appName = n_config_1.ConfigurationManager.getConfig("appInfo.name");
-            const appVersion = n_config_1.ConfigurationManager.getConfig("appInfo.version");
-            const appDescription = n_config_1.ConfigurationManager.getConfig("appInfo.description");
+            const appName = n_config_1.ConfigurationManager.getConfig("package.name");
+            const appVersion = n_config_1.ConfigurationManager.getConfig("package.version");
+            const appDescription = n_config_1.ConfigurationManager.getConfig("package.description");
             console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
             const p = this._program.start();
             this.configureShutDown();
