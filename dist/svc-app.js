@@ -9,12 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SvcApp = void 0;
 const n_ject_1 = require("@nivinjoseph/n-ject");
 const n_exception_1 = require("@nivinjoseph/n-exception");
 const n_defensive_1 = require("@nivinjoseph/n-defensive");
 const n_log_1 = require("@nivinjoseph/n-log");
 const n_util_1 = require("@nivinjoseph/n-util");
 const n_config_1 = require("@nivinjoseph/n-config");
+// public
 class SvcApp {
     constructor() {
         this._programKey = "$program";
@@ -61,11 +63,15 @@ class SvcApp {
                         .catch((e) => {
                         console.error(e);
                         resolve();
+                        // // tslint:disable-next-line
+                        // this._logger.logError(e).then(() => resolve());
                     });
                 }
                 catch (error) {
                     console.error(error);
                     resolve();
+                    // // tslint:disable-next-line
+                    // this._logger.logError(error).then(() => resolve());
                 }
             });
         });
