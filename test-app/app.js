@@ -24,7 +24,7 @@ const n_defensive_1 = require("@nivinjoseph/n-defensive");
 const n_util_1 = require("@nivinjoseph/n-util");
 let App = class App {
     constructor(logger) {
-        n_defensive_1.given(logger, "logger").ensureHasValue().ensureIsObject();
+        (0, n_defensive_1.given)(logger, "logger").ensureHasValue().ensureIsObject();
         this._logger = logger;
         this._stopRequested = false;
     }
@@ -44,7 +44,7 @@ let App = class App {
     }
 };
 App = __decorate([
-    n_ject_1.inject("Logger"),
+    (0, n_ject_1.inject)("Logger"),
     __metadata("design:paramtypes", [Object])
 ], App);
 exports.App = App;

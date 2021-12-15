@@ -1,4 +1,4 @@
-import { ComponentInstaller, Registry } from "@nivinjoseph/n-ject";
+import { Container, ComponentInstaller, Registry } from "@nivinjoseph/n-ject";
 import { Logger } from "@nivinjoseph/n-log";
 export declare class SvcApp {
     private readonly _container;
@@ -11,7 +11,7 @@ export declare class SvcApp {
     private _isShutDown;
     private _isCleanUp;
     get containerRegistry(): Registry;
-    constructor();
+    constructor(container?: Container);
     useLogger(logger: Logger): this;
     useInstaller(installer: ComponentInstaller): this;
     registerProgram(programClass: Function): this;

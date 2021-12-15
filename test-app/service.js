@@ -7,7 +7,7 @@ const src_1 = require("../src");
 const logger = new n_log_1.ConsoleLogger(n_log_1.LogDateTimeZone.est);
 class Installer {
     install(registry) {
-        n_defensive_1.given(registry, "registry").ensureHasValue().ensureIsObject();
+        (0, n_defensive_1.given)(registry, "registry").ensureHasValue().ensureIsObject();
         registry.registerInstance("Logger", logger);
     }
 }

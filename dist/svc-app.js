@@ -18,7 +18,7 @@ const n_util_1 = require("@nivinjoseph/n-util");
 const n_config_1 = require("@nivinjoseph/n-config");
 // public
 class SvcApp {
-    constructor() {
+    constructor(container) {
         this._programKey = "$program";
         this._programRegistered = false;
         this._disposeActions = new Array();
@@ -26,27 +26,28 @@ class SvcApp {
         this._program = null;
         this._isShutDown = false;
         this._isCleanUp = false;
-        this._container = new n_ject_1.Container();
+        (0, n_defensive_1.given)(container, "container").ensureIsObject().ensureIsType(n_ject_1.Container);
+        this._container = container !== null && container !== void 0 ? container : new n_ject_1.Container();
     }
     get containerRegistry() { return this._container; }
     useLogger(logger) {
         if (this._isBootstrapped)
             throw new n_exception_1.InvalidOperationException("useLogger");
-        n_defensive_1.given(logger, "logger").ensureHasValue().ensureIsObject();
+        (0, n_defensive_1.given)(logger, "logger").ensureHasValue().ensureIsObject();
         this._logger = logger;
         return this;
     }
     useInstaller(installer) {
         if (this._isBootstrapped)
             throw new n_exception_1.InvalidOperationException("useInstaller");
-        n_defensive_1.given(installer, "installer").ensureHasValue();
+        (0, n_defensive_1.given)(installer, "installer").ensureHasValue();
         this._container.install(installer);
         return this;
     }
     registerProgram(programClass) {
         if (this._isBootstrapped || this._programRegistered)
             throw new n_exception_1.InvalidOperationException("registerProgram");
-        n_defensive_1.given(programClass, "programClass").ensureHasValue().ensureIsFunction();
+        (0, n_defensive_1.given)(programClass, "programClass").ensureHasValue().ensureIsFunction();
         this._container.registerSingleton(this._programKey, programClass);
         this._programRegistered = true;
         return this;
@@ -54,7 +55,7 @@ class SvcApp {
     registerDisposeAction(disposeAction) {
         if (this._isBootstrapped)
             throw new n_exception_1.InvalidOperationException("registerForDispose");
-        n_defensive_1.given(disposeAction, "disposeAction").ensureHasValue().ensureIsFunction();
+        (0, n_defensive_1.given)(disposeAction, "disposeAction").ensureHasValue().ensureIsFunction();
         this._disposeActions.push(() => {
             return new Promise((resolve) => {
                 try {
