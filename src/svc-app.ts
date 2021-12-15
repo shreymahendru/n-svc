@@ -24,9 +24,10 @@ export class SvcApp
     public get containerRegistry(): Registry { return this._container; }
     
     
-    public constructor()
+    public constructor(container?: Container)
     {
-        this._container = new Container();
+        given(container as Container, "container").ensureIsObject().ensureIsType(Container);
+        this._container = container ?? new Container();
     }
     
     

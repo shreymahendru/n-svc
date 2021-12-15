@@ -41,21 +41,21 @@
     "devDependencies": {
         "@types/mocha": "^8.2.2",
         "@types/node": "^14.14.43",
-        "concurrently": "^6.2.0",
+        "concurrently": "^6.4.0",
         "mocha": "^8.3.2",
-        "nodemon": "^2.0.9",
-        "ts-node": "^9.1.1",
+        "nodemon": "^2.0.15",
+        "ts-node": "^10.4.0",
         "tslint": "^6.1.3",
-        "typescript": "^4.3.5",
+        "typescript": "^4.4.4",
         "typescript-tslint-plugin": "^1.0.1"
     },
     "dependencies": {
         "@nivinjoseph/n-config": "^1.0.33",
-        "@nivinjoseph/n-defensive": "^1.0.35",
+        "@nivinjoseph/n-defensive": "^1.0.36",
         "@nivinjoseph/n-exception": "^1.0.23",
-        "@nivinjoseph/n-ext": "^1.1.24",
+        "@nivinjoseph/n-ext": "^1.1.33",
         "@nivinjoseph/n-ject": "^1.1.14",
-        "@nivinjoseph/n-log": "^1.0.14",
+        "@nivinjoseph/n-log": "^1.0.15",
         "@nivinjoseph/n-util": "^1.0.73"
     }
 }
