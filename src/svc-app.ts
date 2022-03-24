@@ -134,6 +134,7 @@ export class SvcApp
             {
                 console.error(`SERVICE ERROR!!!`);
                 console.error(err);
+                process.exit(1);
             });
     }
     
