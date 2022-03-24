@@ -105,6 +105,7 @@ class SvcApp {
             .catch((err) => {
             console.error(`SERVICE ERROR!!!`);
             console.error(err);
+            process.exit(1);
         });
     }
     configureContainer() {
