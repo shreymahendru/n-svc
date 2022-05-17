@@ -2,6 +2,7 @@ import { Container, ComponentInstaller, Registry } from "@nivinjoseph/n-ject";
 import { Logger } from "@nivinjoseph/n-log";
 export declare class SvcApp {
     private readonly _container;
+    private readonly _ownsContainer;
     private readonly _programKey;
     private _logger;
     private _programRegistered;

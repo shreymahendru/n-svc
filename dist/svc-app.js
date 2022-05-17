@@ -27,7 +27,14 @@ class SvcApp {
         this._isShutDown = false;
         this._isCleanUp = false;
         (0, n_defensive_1.given)(container, "container").ensureIsObject().ensureIsType(n_ject_1.Container);
-        this._container = container !== null && container !== void 0 ? container : new n_ject_1.Container();
+        if (container == null) {
+            this._container = new n_ject_1.Container();
+            this._ownsContainer = true;
+        }
+        else {
+            this._container = container;
+            this._ownsContainer = false;
+        }
     }
     get containerRegistry() { return this._container; }
     useLogger(logger) {
@@ -109,7 +116,8 @@ class SvcApp {
         });
     }
     configureContainer() {
-        this._container.bootstrap();
+        if (this._ownsContainer)
+            this._container.bootstrap();
         this.registerDisposeAction(() => this._container.dispose());
     }
     configureStartup() {
