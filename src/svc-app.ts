@@ -11,6 +11,7 @@ import { ConfigurationManager } from "@nivinjoseph/n-config";
 export class SvcApp
 {
     private readonly _container: Container;
+    private readonly _ownsContainer: boolean;
     private readonly _programKey = "$program";
     private _logger: Logger;
     private _programRegistered = false;
@@ -27,7 +28,16 @@ export class SvcApp
     public constructor(container?: Container)
     {
         given(container as Container, "container").ensureIsObject().ensureIsType(Container);
-        this._container = container ?? new Container();
+        if (container == null)
+        {
+            this._container = new Container();
+            this._ownsContainer = true;
+        }
+        else
+        {
+            this._container = container;
+            this._ownsContainer = false;
+        }
     }
     
     
@@ -140,7 +150,9 @@ export class SvcApp
     
     private configureContainer(): void
     {
-        this._container.bootstrap();
+        if (this._ownsContainer)
+            this._container.bootstrap();
+        
         this.registerDisposeAction(() => this._container.dispose());
     }
     
