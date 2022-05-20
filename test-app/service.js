@@ -15,6 +15,6 @@ const service = new src_1.SvcApp();
 service
     .useLogger(logger)
     .useInstaller(new Installer())
-    .registerProgram(app_1.App);
-service.bootstrap();
+    .registerProgram(app_1.App)
+    .bootstrap();
 //# sourceMappingURL=service.js.map

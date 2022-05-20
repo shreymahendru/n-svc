@@ -23,6 +23,5 @@ const service = new SvcApp();
 service
     .useLogger(logger)
     .useInstaller(new Installer())
-    .registerProgram(App);
-
-service.bootstrap();
+    .registerProgram(App)
+    .bootstrap();

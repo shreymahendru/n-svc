@@ -13,11 +13,11 @@ export class SvcApp
     private readonly _container: Container;
     private readonly _ownsContainer: boolean;
     private readonly _programKey = "$program";
-    private _logger: Logger;
+    private _logger!: Logger;
     private _programRegistered = false;
-    private _disposeActions = new Array<() => Promise<void>>();
-    private _isBootstrapped: boolean = false;
-    private _program: Program | null = null;
+    private readonly _disposeActions = new Array<() => Promise<void>>();
+    private _isBootstrapped = false;
+    private _program!: Program;
     private _isShutDown = false;
     private _isCleanUp = false;
     
@@ -113,12 +113,13 @@ export class SvcApp
         if (this._isBootstrapped || !this._programRegistered)
             throw new InvalidOperationException("bootstrap");
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!this._logger)
             this._logger = new ConsoleLogger();
         
-        this.configureContainer();
+        this._configureContainer();
         
-        this.configureStartup()
+        this._configureStartup()
             .then(() =>
             {
                 const appEnv = ConfigurationManager.getConfig<string>("env");
@@ -129,7 +130,7 @@ export class SvcApp
                 console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
                 
                 const p = this._program.start();
-                this.configureShutDown();
+                this._configureShutDown();
                 this._isBootstrapped = true;
                 console.log("SERVICE STARTED.");
                 return p;
@@ -137,9 +138,9 @@ export class SvcApp
             .then(() =>
             {
                 console.log(`SERVICE COMPLETE.`);
-                return this.cleanUp();
+                return this._cleanUp();
             })
-            .then(() => this.cleanUp())
+            .then(() => this._cleanUp())
             .catch((err) =>
             {
                 console.error(`SERVICE ERROR!!!`);
@@ -148,7 +149,7 @@ export class SvcApp
             });
     }
     
-    private configureContainer(): void
+    private _configureContainer(): void
     {
         if (this._ownsContainer)
             this._container.bootstrap();
@@ -156,13 +157,13 @@ export class SvcApp
         this.registerDisposeAction(() => this._container.dispose());
     }
     
-    private async configureStartup(): Promise<void>
+    private async _configureStartup(): Promise<void>
     {
         console.log(`SERVICE STARTING.`);
         this._program = this._container.resolve<Program>(this._programKey);
     }
     
-    private configureShutDown(): void
+    private _configureShutDown(): void
     {
         this.registerDisposeAction(() =>
         {
@@ -170,11 +171,17 @@ export class SvcApp
             return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
         });
 
-        process.on("SIGTERM", () => this.shutDown("SIGTERM"));
-        process.on("SIGINT", () => this.shutDown("SIGINT"));
+        process.on("SIGTERM", () =>
+        {
+            this._shutDown("SIGTERM").catch(e => console.error(e));
+        });
+        process.on("SIGINT", () =>
+        {
+            this._shutDown("SIGINT").catch(e => console.error(e));
+        });
     }
     
-    private async shutDown(signal: string): Promise<void>
+    private async _shutDown(signal: string): Promise<void>
     {
         if (this._isShutDown)
             return;
@@ -184,13 +191,13 @@ export class SvcApp
         await this._program.stop();
         console.warn(`SERVICE STOPPING (${signal}).`);
 
-        await this.cleanUp();   
+        await this._cleanUp();   
 
         console.warn(`SERVICE STOPPED (${signal}).`);
         process.exit(0);    
     }
     
-    private async cleanUp(): Promise<void>
+    private async _cleanUp(): Promise<void>
     {
         if (this._isCleanUp)
             return;
