@@ -5,7 +5,7 @@ import { ConsoleLogger, LogDateTimeZone } from "@nivinjoseph/n-log";
 import { SvcApp } from "../src";
 
 
-const logger = new ConsoleLogger(LogDateTimeZone.est);
+const logger = new ConsoleLogger({ logDateTimeZone: LogDateTimeZone.est });
 
 class Installer implements ComponentInstaller
 {

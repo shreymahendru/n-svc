@@ -4,7 +4,7 @@ const n_defensive_1 = require("@nivinjoseph/n-defensive");
 const app_1 = require("./app");
 const n_log_1 = require("@nivinjoseph/n-log");
 const src_1 = require("../src");
-const logger = new n_log_1.ConsoleLogger(n_log_1.LogDateTimeZone.est);
+const logger = new n_log_1.ConsoleLogger({ logDateTimeZone: n_log_1.LogDateTimeZone.est });
 class Installer {
     install(registry) {
         (0, n_defensive_1.given)(registry, "registry").ensureHasValue().ensureIsObject();
