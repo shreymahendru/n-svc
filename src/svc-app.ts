@@ -132,12 +132,12 @@ export class SvcApp
                 const p = this._program.start();
                 this._configureShutDown();
                 this._isBootstrapped = true;
-                console.log("SERVICE STARTED.");
+                console.log("SERVICE STARTED!");
                 return p;
             })
             .then(() =>
             {
-                console.log(`SERVICE COMPLETE.`);
+                console.log(`SERVICE COMPLETE!`);
                 return this._cleanUp();
             })
             .then(() => this._cleanUp())
@@ -159,7 +159,7 @@ export class SvcApp
     
     private async _configureStartup(): Promise<void>
     {
-        console.log(`SERVICE STARTING.`);
+        console.log(`SERVICE STARTING...`);
         this._program = this._container.resolve<Program>(this._programKey);
     }
     
