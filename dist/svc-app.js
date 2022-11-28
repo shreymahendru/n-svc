@@ -93,11 +93,11 @@ class SvcApp {
             const p = this._program.start();
             this._configureShutDown();
             this._isBootstrapped = true;
-            console.log("SERVICE STARTED.");
+            console.log("SERVICE STARTED!");
             return p;
         })
             .then(() => {
-            console.log(`SERVICE COMPLETE.`);
+            console.log(`SERVICE COMPLETE!`);
             return this._cleanUp();
         })
             .then(() => this._cleanUp())
@@ -114,7 +114,7 @@ class SvcApp {
     }
     _configureStartup() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log(`SERVICE STARTING.`);
+            console.log(`SERVICE STARTING...`);
             this._program = this._container.resolve(this._programKey);
         });
     }
