@@ -3,7 +3,6 @@ import { InvalidOperationException } from "@nivinjoseph/n-exception";
 import { given } from "@nivinjoseph/n-defensive";
 import { Program } from "./program";
 import { Logger, ConsoleLogger } from "@nivinjoseph/n-log";
-import { Delay } from "@nivinjoseph/n-util";
 import { ConfigurationManager } from "@nivinjoseph/n-config";
 
 
@@ -168,7 +167,8 @@ export class SvcApp
         this.registerDisposeAction(() =>
         {
             console.log("CLEANING UP. PLEASE WAIT...");
-            return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
+            // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
+            return Promise.resolve();
         });
 
         process.on("SIGTERM", () =>
@@ -187,7 +187,7 @@ export class SvcApp
             return;
 
         this._isShutDown = true;
-
+        
         await this._program.stop();
         console.warn(`SERVICE STOPPING (${signal}).`);
 
