@@ -6,7 +6,6 @@ const n_ject_1 = require("@nivinjoseph/n-ject");
 const n_exception_1 = require("@nivinjoseph/n-exception");
 const n_defensive_1 = require("@nivinjoseph/n-defensive");
 const n_log_1 = require("@nivinjoseph/n-log");
-const n_util_1 = require("@nivinjoseph/n-util");
 const n_config_1 = require("@nivinjoseph/n-config");
 // public
 class SvcApp {
@@ -121,7 +120,8 @@ class SvcApp {
     _configureShutDown() {
         this.registerDisposeAction(() => {
             console.log("CLEANING UP. PLEASE WAIT...");
-            return n_util_1.Delay.seconds(n_config_1.ConfigurationManager.getConfig("env") === "dev" ? 2 : 20);
+            // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
+            return Promise.resolve();
         });
         process.on("SIGTERM", () => {
             this._shutDown("SIGTERM").catch(e => console.error(e));
