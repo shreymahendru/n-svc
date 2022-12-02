@@ -11,6 +11,7 @@ export declare class SvcApp {
     private _program;
     private _isShutDown;
     private _isCleanUp;
+    private _shutdownPromise;
     get containerRegistry(): Registry;
     constructor(container?: Container);
     useLogger(logger: Logger): this;
@@ -22,5 +23,6 @@ export declare class SvcApp {
     private _configureStartup;
     private _configureShutDown;
     private _shutDown;
+    private _actuallyShutdown;
     private _cleanUp;
 }

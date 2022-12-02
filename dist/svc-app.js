@@ -16,6 +16,7 @@ class SvcApp {
         this._isBootstrapped = false;
         this._isShutDown = false;
         this._isCleanUp = false;
+        this._shutdownPromise = null;
         (0, n_defensive_1.given)(container, "container").ensureIsObject().ensureIsType(n_ject_1.Container);
         if (container == null) {
             this._container = new n_ject_1.Container();
@@ -132,13 +133,21 @@ class SvcApp {
     }
     _shutDown(signal) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.warn(`SIGNAL RECEIVED (${signal})`);
+            if (this._shutdownPromise == null)
+                this._shutdownPromise = this._actuallyShutdown(signal);
+            return this._shutdownPromise;
+        });
+    }
+    _actuallyShutdown(signal) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.warn(`SERVICE STOPPING (${signal})`);
             if (this._isShutDown)
                 return;
             this._isShutDown = true;
             yield this._program.stop();
-            console.warn(`SERVICE STOPPING (${signal}).`);
             yield this._cleanUp();
-            console.warn(`SERVICE STOPPED (${signal}).`);
+            console.warn(`SERVICE STOPPED (${signal})`);
             process.exit(0);
         });
     }
@@ -146,14 +155,14 @@ class SvcApp {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (this._isCleanUp)
                 return;
+            console.log("Dispose actions executing");
             this._isCleanUp = true;
-            console.log("Dispose actions executing.");
             try {
                 yield Promise.all(this._disposeActions.map(t => t()));
-                console.log("Dispose actions complete.");
+                console.log("Dispose actions complete");
             }
             catch (error) {
-                console.warn("Dispose actions error.");
+                console.warn("Dispose actions error");
                 console.error(error);
             }
         });
