@@ -19,6 +19,7 @@ export class SvcApp
     private _program!: Program;
     private _isShutDown = false;
     private _isCleanUp = false;
+    private _shutdownPromise: Promise<void> | null = null;
     
     
     public get containerRegistry(): Registry { return this._container; }
@@ -183,18 +184,29 @@ export class SvcApp
     
     private async _shutDown(signal: string): Promise<void>
     {
+        console.warn(`SIGNAL RECEIVED (${signal})`);
+        
+        if (this._shutdownPromise == null)
+            this._shutdownPromise = this._actuallyShutdown(signal);
+        
+        return this._shutdownPromise;
+    }
+    
+    private async _actuallyShutdown(signal: string): Promise<void>
+    {
+        console.warn(`SERVICE STOPPING (${signal})`);
+        
         if (this._isShutDown)
             return;
 
         this._isShutDown = true;
-        
+
         await this._program.stop();
-        console.warn(`SERVICE STOPPING (${signal}).`);
 
-        await this._cleanUp();   
+        await this._cleanUp();
 
-        console.warn(`SERVICE STOPPED (${signal}).`);
-        process.exit(0);    
+        console.warn(`SERVICE STOPPED (${signal})`);
+        process.exit(0);  
     }
     
     private async _cleanUp(): Promise<void>
@@ -202,17 +214,18 @@ export class SvcApp
         if (this._isCleanUp)
             return;
 
+        console.log("Dispose actions executing");
+        
         this._isCleanUp = true;
         
-        console.log("Dispose actions executing.");
         try
         {
             await Promise.all(this._disposeActions.map(t => t()));
-            console.log("Dispose actions complete.");
+            console.log("Dispose actions complete");
         }
         catch (error)
         {
-            console.warn("Dispose actions error.");
+            console.warn("Dispose actions error");
             console.error(error);
         }
     }
