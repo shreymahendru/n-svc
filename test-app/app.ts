@@ -33,9 +33,12 @@ export class App implements Program
         }
     }
     
-    public stop(): Promise<void>
+    public async stop(): Promise<void>
     {
         this._stopRequested = true;
-        return Promise.resolve();
+        
+        await this._logger.logInfo("I am stopping...");
+        
+        // await Delay.seconds(2);
     }
 }

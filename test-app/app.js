@@ -22,8 +22,11 @@ let App = class App {
         });
     }
     stop() {
-        this._stopRequested = true;
-        return Promise.resolve();
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            this._stopRequested = true;
+            yield this._logger.logInfo("I am stopping...");
+            // await Delay.seconds(2);
+        });
     }
 };
 App = tslib_1.__decorate([

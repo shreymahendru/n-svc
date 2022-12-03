@@ -4,6 +4,7 @@ import { given } from "@nivinjoseph/n-defensive";
 import { Program } from "./program";
 import { Logger, ConsoleLogger } from "@nivinjoseph/n-log";
 import { ConfigurationManager } from "@nivinjoseph/n-config";
+import { ShutdownManager } from "./shutdown-manager";
 
 
 // public
@@ -17,9 +18,11 @@ export class SvcApp
     private readonly _disposeActions = new Array<() => Promise<void>>();
     private _isBootstrapped = false;
     private _program!: Program;
-    private _isShutDown = false;
+    // private _isShutDown = false;
     private _isCleanUp = false;
-    private _shutdownPromise: Promise<void> | null = null;
+    // private _shutdownPromise: Promise<void> | null = null;
+    // @ts-expect-error: not invoked
+    private _shutdownManager!: ShutdownManager;
     
     
     public get containerRegistry(): Registry { return this._container; }
@@ -171,43 +174,50 @@ export class SvcApp
             // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
             return Promise.resolve();
         });
+        
+        
+        this._shutdownManager = new ShutdownManager([
+            (): Promise<void> => this._program.stop(),
+            (): Promise<any> => this._cleanUp()
+        ]);
+        
 
-        process.on("SIGTERM", () =>
-        {
-            this._shutDown("SIGTERM").catch(e => console.error(e));
-        });
-        process.on("SIGINT", () =>
-        {
-            this._shutDown("SIGINT").catch(e => console.error(e));
-        });
+        // process.on("SIGTERM", () =>
+        // {
+        //     this._shutDown("SIGTERM").catch(e => console.error(e));
+        // });
+        // process.on("SIGINT", () =>
+        // {
+        //     this._shutDown("SIGINT").catch(e => console.error(e));
+        // });
     }
     
-    private async _shutDown(signal: string): Promise<void>
-    {
-        console.warn(`SIGNAL RECEIVED (${signal})`);
+    // private async _shutDown(signal: string): Promise<void>
+    // {
+    //     console.warn(`SIGNAL RECEIVED (${signal})`);
         
-        if (this._shutdownPromise == null)
-            this._shutdownPromise = this._actuallyShutdown(signal);
+    //     if (this._shutdownPromise == null)
+    //         this._shutdownPromise = this._actuallyShutdown(signal);
         
-        return this._shutdownPromise;
-    }
+    //     return this._shutdownPromise;
+    // }
     
-    private async _actuallyShutdown(signal: string): Promise<void>
-    {
-        console.warn(`SERVICE STOPPING (${signal})`);
+    // private async _actuallyShutdown(signal: string): Promise<void>
+    // {
+    //     console.warn(`SERVICE STOPPING (${signal})`);
         
-        if (this._isShutDown)
-            return;
+    //     if (this._isShutDown)
+    //         return;
 
-        this._isShutDown = true;
+    //     this._isShutDown = true;
 
-        await this._program.stop();
+    //     await this._program.stop();
 
-        await this._cleanUp();
+    //     await this._cleanUp();
 
-        console.warn(`SERVICE STOPPED (${signal})`);
-        process.exit(0);  
-    }
+    //     console.warn(`SERVICE STOPPED (${signal})`);
+    //     process.exit(0);  
+    // }
     
     private async _cleanUp(): Promise<void>
     {
