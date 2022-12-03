@@ -39,6 +39,6 @@ export class App implements Program
         
         await this._logger.logInfo("I am stopping...");
         
-        // await Delay.seconds(2);
+        await Delay.seconds(2);
     }
 }

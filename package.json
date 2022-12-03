@@ -22,7 +22,8 @@
         "publish-package": "npm run ts-build-dist && git add . && git commit -m 'preparing to publish new version' && npm version patch && git push && npm publish --access=public",
         "nodemon": "nodemon --ignore test/ --inspect=4000 ./test-app/service.js",
         "predev": "npm run ts-build",
-        "dev": "concurrently \"npm:ts-compile-watch\" \"npm:nodemon\""
+        "xdev": "concurrently \"npm:ts-compile-watch\" \"npm:nodemon\"",
+        "dev": "node ./test-app/service.js"
     },
     "repository": {
         "type": "git",

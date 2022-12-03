@@ -25,7 +25,7 @@ let App = class App {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             this._stopRequested = true;
             yield this._logger.logInfo("I am stopping...");
-            // await Delay.seconds(2);
+            yield n_util_1.Delay.seconds(2);
         });
     }
 };

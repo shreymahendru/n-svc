@@ -21,7 +21,6 @@ export class SvcApp
     // private _isShutDown = false;
     private _isCleanUp = false;
     // private _shutdownPromise: Promise<void> | null = null;
-    // @ts-expect-error: not invoked
     private _shutdownManager!: ShutdownManager;
     
     
@@ -132,18 +131,23 @@ export class SvcApp
 
                 console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
                 
-                const p = this._program.start();
                 this._configureShutDown();
+                
+                const p = this._program.start();
                 this._isBootstrapped = true;
                 console.log("SERVICE STARTED!");
                 return p;
             })
+            .then(async () =>
+            {
+                if (!this._shutdownManager.isShutdown)
+                    await this._cleanUp();
+            })
             .then(() =>
             {
-                console.log(`SERVICE COMPLETE!`);
-                return this._cleanUp();
+                if (!this._shutdownManager.isShutdown)
+                    console.log(`SERVICE COMPLETE!`);
             })
-            .then(() => this._cleanUp())
             .catch((err) =>
             {
                 console.error(`SERVICE ERROR!!!`);
