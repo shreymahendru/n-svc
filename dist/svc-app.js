@@ -7,6 +7,7 @@ const n_exception_1 = require("@nivinjoseph/n-exception");
 const n_defensive_1 = require("@nivinjoseph/n-defensive");
 const n_log_1 = require("@nivinjoseph/n-log");
 const n_config_1 = require("@nivinjoseph/n-config");
+const shutdown_manager_1 = require("./shutdown-manager");
 // public
 class SvcApp {
     constructor(container) {
@@ -14,9 +15,8 @@ class SvcApp {
         this._programRegistered = false;
         this._disposeActions = new Array();
         this._isBootstrapped = false;
-        this._isShutDown = false;
+        // private _isShutDown = false;
         this._isCleanUp = false;
-        this._shutdownPromise = null;
         (0, n_defensive_1.given)(container, "container").ensureIsObject().ensureIsType(n_ject_1.Container);
         if (container == null) {
             this._container = new n_ject_1.Container();
@@ -90,17 +90,20 @@ class SvcApp {
             const appVersion = n_config_1.ConfigurationManager.getConfig("package.version");
             const appDescription = n_config_1.ConfigurationManager.getConfig("package.description");
             console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
-            const p = this._program.start();
             this._configureShutDown();
+            const p = this._program.start();
             this._isBootstrapped = true;
             console.log("SERVICE STARTED!");
             return p;
         })
+            .then(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            if (!this._shutdownManager.isShutdown)
+                yield this._cleanUp();
+        }))
             .then(() => {
-            console.log(`SERVICE COMPLETE!`);
-            return this._cleanUp();
+            if (!this._shutdownManager.isShutdown)
+                console.log(`SERVICE COMPLETE!`);
         })
-            .then(() => this._cleanUp())
             .catch((err) => {
             console.error(`SERVICE ERROR!!!`);
             console.error(err);
@@ -124,33 +127,37 @@ class SvcApp {
             // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
             return Promise.resolve();
         });
-        process.on("SIGTERM", () => {
-            this._shutDown("SIGTERM").catch(e => console.error(e));
-        });
-        process.on("SIGINT", () => {
-            this._shutDown("SIGINT").catch(e => console.error(e));
-        });
+        this._shutdownManager = new shutdown_manager_1.ShutdownManager([
+            () => this._program.stop(),
+            () => this._cleanUp()
+        ]);
+        // process.on("SIGTERM", () =>
+        // {
+        //     this._shutDown("SIGTERM").catch(e => console.error(e));
+        // });
+        // process.on("SIGINT", () =>
+        // {
+        //     this._shutDown("SIGINT").catch(e => console.error(e));
+        // });
     }
-    _shutDown(signal) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.warn(`SIGNAL RECEIVED (${signal})`);
-            if (this._shutdownPromise == null)
-                this._shutdownPromise = this._actuallyShutdown(signal);
-            return this._shutdownPromise;
-        });
-    }
-    _actuallyShutdown(signal) {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.warn(`SERVICE STOPPING (${signal})`);
-            if (this._isShutDown)
-                return;
-            this._isShutDown = true;
-            yield this._program.stop();
-            yield this._cleanUp();
-            console.warn(`SERVICE STOPPED (${signal})`);
-            process.exit(0);
-        });
-    }
+    // private async _shutDown(signal: string): Promise<void>
+    // {
+    //     console.warn(`SIGNAL RECEIVED (${signal})`);
+    //     if (this._shutdownPromise == null)
+    //         this._shutdownPromise = this._actuallyShutdown(signal);
+    //     return this._shutdownPromise;
+    // }
+    // private async _actuallyShutdown(signal: string): Promise<void>
+    // {
+    //     console.warn(`SERVICE STOPPING (${signal})`);
+    //     if (this._isShutDown)
+    //         return;
+    //     this._isShutDown = true;
+    //     await this._program.stop();
+    //     await this._cleanUp();
+    //     console.warn(`SERVICE STOPPED (${signal})`);
+    //     process.exit(0);  
+    // }
     _cleanUp() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (this._isCleanUp)
