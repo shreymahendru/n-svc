@@ -1,8 +1,10 @@
 import { given } from "@nivinjoseph/n-defensive";
+import { Logger } from "@nivinjoseph/n-log";
 
 
 export class ShutdownManager
 {
+    private readonly _logger: Logger;
     private readonly _cleanup: ReadonlyArray<() => Promise<any>>;
     private _isShutDown = false;
     private _shutdownPromise: Promise<void> | null = null;
@@ -11,41 +13,45 @@ export class ShutdownManager
     public get isShutdown(): boolean { return this._isShutDown; }
 
 
-    public constructor(cleanup: ReadonlyArray<() => Promise<any>>)
+    public constructor(logger: Logger, cleanup: ReadonlyArray<() => Promise<any>>)
     {
+        given(logger, "logger").ensureHasValue().ensureIsObject();
+        this._logger = logger;
+        
         given(cleanup, "cleanup").ensureHasValue().ensureIsArray().ensureIsNotEmpty();
         this._cleanup = cleanup;
 
         process
             .on("SIGINT", () =>
             {
-                this._initiateShutdown("SIGINT").catch(e => console.error(e));
+                this._initiateShutdown("SIGINT").catch(e => this._logger.logError(e));
             })
             .on("SIGTERM", () =>
             {
-                this._initiateShutdown("SIGTERM").catch(e => console.error(e));
+                this._initiateShutdown("SIGTERM").catch(e => this._logger.logError(e));
             });
     }
 
-    private _initiateShutdown(signal: string): Promise<void>
+    private async _initiateShutdown(signal: string): Promise<void>
     {
-        console.warn(`SIGNAL RECEIVED (${signal})`);
+        await this._logger.logWarning(`SIGNAL RECEIVED (${signal})`);
 
         if (this._shutdownPromise == null)
             this._shutdownPromise = this._actuallyShutdown(signal);
 
-        return this._shutdownPromise;
+        await this._shutdownPromise;
     }
 
     private async _actuallyShutdown(signal: string): Promise<void>
     {
-        console.warn(`APPLICATION STOPPING (${signal})`);
+        await this._logger.logWarning(`APPLICATION STOPPING (${signal})...`);
 
         if (this._isShutDown)
             return;
 
         this._isShutDown = true;
 
+        await this._logger.logInfo("EXECUTING SHUTDOWN...");
         for (const action of this._cleanup)
         {
             try 
@@ -54,12 +60,13 @@ export class ShutdownManager
             }
             catch (error)
             {
-                console.warn("Error during cleanup");
-                console.warn(error);
+                await this._logger.logWarning("ERROR DURING SHUTDOWN");
+                await this._logger.logError(error as any);
             }
         }
+        await this._logger.logInfo("SHUTDOWN COMPLETE");
 
-        console.warn(`APPLICATION STOPPED (${signal})`);
+        await this._logger.logWarning(`APPLICATION STOPPED (${signal})`);
         process.exit(0);
     }
 }

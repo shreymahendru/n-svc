@@ -92,16 +92,16 @@ export class SvcApp
                         .then(() => resolve())
                         .catch((e) =>
                         {
-                            console.error(e);
-                            resolve();
+                            this._logger.logError(e).finally(() => resolve());
+                            // resolve();
                             // // tslint:disable-next-line
                             // this._logger.logError(e).then(() => resolve());
                         });
                 }
                 catch (error)
                 {
-                    console.error(error);
-                    resolve();
+                    this._logger.logError(error as any).finally(() => resolve());
+                    // resolve();
                     // // tslint:disable-next-line
                     // this._logger.logError(error).then(() => resolve());
                 }
@@ -117,41 +117,43 @@ export class SvcApp
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!this._logger)
-            this._logger = new ConsoleLogger();
+            this._logger = new ConsoleLogger({
+                useJsonFormat: ConfigurationManager.getConfig<string>("env") !== "dev"
+            });
         
         this._configureContainer();
         
         this._configureStartup()
-            .then(() =>
+            .then(async () =>
             {
                 const appEnv = ConfigurationManager.getConfig<string>("env");
                 const appName = ConfigurationManager.getConfig<string>("package.name");
                 const appVersion = ConfigurationManager.getConfig<string>("package.version");
                 const appDescription = ConfigurationManager.getConfig<string>("package.description");
 
-                console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
+                await this._logger.logInfo(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
                 
                 this._configureShutDown();
                 
                 const p = this._program.start();
                 this._isBootstrapped = true;
-                console.log("SERVICE STARTED!");
-                return p;
+                await this._logger.logInfo("SERVICE STARTED");
+                await p;
             })
             .then(async () =>
             {
                 if (!this._shutdownManager.isShutdown)
                     await this._cleanUp();
             })
-            .then(() =>
+            .then(async () =>
             {
                 if (!this._shutdownManager.isShutdown)
-                    console.log(`SERVICE COMPLETE!`);
+                    await this._logger.logInfo(`SERVICE COMPLETE`);
             })
-            .catch((err) =>
+            .catch(async (err) =>
             {
-                console.error(`SERVICE ERROR!!!`);
-                console.error(err);
+                await this._logger.logWarning(`SERVICE ERROR`);
+                await this._logger.logError(err);
                 process.exit(1);
             });
     }
@@ -166,22 +168,34 @@ export class SvcApp
     
     private async _configureStartup(): Promise<void>
     {
-        console.log(`SERVICE STARTING...`);
+        await this._logger.logInfo(`SERVICE STARTING...`);
         this._program = this._container.resolve<Program>(this._programKey);
     }
     
     private _configureShutDown(): void
     {
-        this.registerDisposeAction(() =>
+        this.registerDisposeAction(async () =>
         {
-            console.log("CLEANING UP. PLEASE WAIT...");
+            await this._logger.logInfo("CLEANING UP. PLEASE WAIT...");
             // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
-            return Promise.resolve();
         });
         
         
-        this._shutdownManager = new ShutdownManager([
-            (): Promise<void> => this._program.stop(),
+        this._shutdownManager = new ShutdownManager(this._logger, [
+            async (): Promise<void> =>
+            {
+                try 
+                {
+                    await this._logger.logInfo("STOPPING PROGRAM...");
+                    await this._program.stop();
+                    await this._logger.logInfo("PROGRAM STOPPED");    
+                }
+                catch (error)
+                {
+                    await this._logger.logWarning("ERROR STOPPING PROGRAM");
+                    await this._logger.logError(error as any);
+                }
+            },
             (): Promise<any> => this._cleanUp()
         ]);
         
@@ -228,19 +242,18 @@ export class SvcApp
         if (this._isCleanUp)
             return;
 
-        console.log("Dispose actions executing");
-        
         this._isCleanUp = true;
         
+        await this._logger.logInfo("DISPOSE ACTIONS EXECUTING...");
         try
         {
-            await Promise.all(this._disposeActions.map(t => t()));
-            console.log("Dispose actions complete");
+            await Promise.allSettled(this._disposeActions.map(t => t()));
+            await this._logger.logInfo("DISPOSE ACTIONS COMPLETE");
         }
         catch (error)
         {
-            console.warn("Dispose actions error");
-            console.error(error);
+            await this._logger.logWarning("DISPOSE ACTIONS ERROR");
+            await this._logger.logError(error as any);
         }
     }
 }
