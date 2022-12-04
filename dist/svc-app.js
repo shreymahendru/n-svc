@@ -60,15 +60,15 @@ class SvcApp {
                     disposeAction()
                         .then(() => resolve())
                         .catch((e) => {
-                        console.error(e);
-                        resolve();
+                        this._logger.logError(e).finally(() => resolve());
+                        // resolve();
                         // // tslint:disable-next-line
                         // this._logger.logError(e).then(() => resolve());
                     });
                 }
                 catch (error) {
-                    console.error(error);
-                    resolve();
+                    this._logger.logError(error).finally(() => resolve());
+                    // resolve();
                     // // tslint:disable-next-line
                     // this._logger.logError(error).then(() => resolve());
                 }
@@ -81,34 +81,36 @@ class SvcApp {
             throw new n_exception_1.InvalidOperationException("bootstrap");
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!this._logger)
-            this._logger = new n_log_1.ConsoleLogger();
+            this._logger = new n_log_1.ConsoleLogger({
+                useJsonFormat: n_config_1.ConfigurationManager.getConfig("env") !== "dev"
+            });
         this._configureContainer();
         this._configureStartup()
-            .then(() => {
+            .then(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
             const appEnv = n_config_1.ConfigurationManager.getConfig("env");
             const appName = n_config_1.ConfigurationManager.getConfig("package.name");
             const appVersion = n_config_1.ConfigurationManager.getConfig("package.version");
             const appDescription = n_config_1.ConfigurationManager.getConfig("package.description");
-            console.log(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
+            yield this._logger.logInfo(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
             this._configureShutDown();
             const p = this._program.start();
             this._isBootstrapped = true;
-            console.log("SERVICE STARTED!");
-            return p;
-        })
+            yield this._logger.logInfo("SERVICE STARTED");
+            yield p;
+        }))
             .then(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this._shutdownManager.isShutdown)
                 yield this._cleanUp();
         }))
-            .then(() => {
+            .then(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (!this._shutdownManager.isShutdown)
-                console.log(`SERVICE COMPLETE!`);
-        })
-            .catch((err) => {
-            console.error(`SERVICE ERROR!!!`);
-            console.error(err);
+                yield this._logger.logInfo(`SERVICE COMPLETE`);
+        }))
+            .catch((err) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            yield this._logger.logWarning(`SERVICE ERROR`);
+            yield this._logger.logError(err);
             process.exit(1);
-        });
+        }));
     }
     _configureContainer() {
         if (this._ownsContainer)
@@ -117,18 +119,27 @@ class SvcApp {
     }
     _configureStartup() {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            console.log(`SERVICE STARTING...`);
+            yield this._logger.logInfo(`SERVICE STARTING...`);
             this._program = this._container.resolve(this._programKey);
         });
     }
     _configureShutDown() {
-        this.registerDisposeAction(() => {
-            console.log("CLEANING UP. PLEASE WAIT...");
+        this.registerDisposeAction(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            yield this._logger.logInfo("CLEANING UP. PLEASE WAIT...");
             // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
-            return Promise.resolve();
-        });
-        this._shutdownManager = new shutdown_manager_1.ShutdownManager([
-            () => this._program.stop(),
+        }));
+        this._shutdownManager = new shutdown_manager_1.ShutdownManager(this._logger, [
+            () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                try {
+                    yield this._logger.logInfo("STOPPING PROGRAM...");
+                    yield this._program.stop();
+                    yield this._logger.logInfo("PROGRAM STOPPED");
+                }
+                catch (error) {
+                    yield this._logger.logWarning("ERROR STOPPING PROGRAM");
+                    yield this._logger.logError(error);
+                }
+            }),
             () => this._cleanUp()
         ]);
         // process.on("SIGTERM", () =>
@@ -162,15 +173,15 @@ class SvcApp {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             if (this._isCleanUp)
                 return;
-            console.log("Dispose actions executing");
             this._isCleanUp = true;
+            yield this._logger.logInfo("DISPOSE ACTIONS EXECUTING...");
             try {
-                yield Promise.all(this._disposeActions.map(t => t()));
-                console.log("Dispose actions complete");
+                yield Promise.allSettled(this._disposeActions.map(t => t()));
+                yield this._logger.logInfo("DISPOSE ACTIONS COMPLETE");
             }
             catch (error) {
-                console.warn("Dispose actions error");
-                console.error(error);
+                yield this._logger.logWarning("DISPOSE ACTIONS ERROR");
+                yield this._logger.logError(error);
             }
         });
     }
