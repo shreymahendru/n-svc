@@ -1,10 +1,11 @@
-import * as Assert from "assert";
+import assert from "node:assert";
+import test, { describe } from "node:test";
 
 
-suite("Dummy tests", () =>
+await describe("Dummy tests", async () =>
 {
-    test("dummy", () =>
+    await test("dummy", () =>
     {
-        Assert.ok(true);
+        assert.ok(true);
     });
 });
