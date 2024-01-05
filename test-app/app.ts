@@ -1,7 +1,7 @@
 import { inject } from "@nivinjoseph/n-ject";
 import { Logger } from "@nivinjoseph/n-log";
 import { given } from "@nivinjoseph/n-defensive";
-import { Program } from "../src";
+import { Program } from "../src/index.js";
 import { Delay } from "@nivinjoseph/n-util";
 
 
@@ -25,7 +25,7 @@ export class App implements Program
     {
         let index = 1;
         
-        while (index <= 15 && !this._stopRequested)
+        while (index <= 55 && !this._stopRequested)
         {
             await this._logger.logInfo(`${index} I am running...`);
             index++;

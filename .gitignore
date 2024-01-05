@@ -45,3 +45,14 @@ src/**/*.js
 src/**/*.map
 test/**/*.js
 test/**/*.map
+test-app/**/*.js
+test-app/**/*.map
+
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

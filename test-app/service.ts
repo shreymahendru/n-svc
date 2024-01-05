@@ -1,8 +1,8 @@
 import { ComponentInstaller, Registry } from "@nivinjoseph/n-ject";
 import { given } from "@nivinjoseph/n-defensive";
-import { App } from "./app";
+import { App } from "./app.js";
 import { ConsoleLogger, LogDateTimeZone } from "@nivinjoseph/n-log";
-import { SvcApp } from "../src";
+import { SvcApp } from "../src/index.js";
 
 
 const logger = new ConsoleLogger({ logDateTimeZone: LogDateTimeZone.est });

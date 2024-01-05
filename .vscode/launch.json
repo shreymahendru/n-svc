@@ -6,31 +6,6 @@
     "configurations": [
         {
             "type": "node",
-            "request": "launch",
-            "name": "Debug Mocha tests",
-            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-            "stopOnEntry": false,
-            "args": [
-                "-t",
-                "10000",
-                "--reporter",
-                "spec",
-                "--ui",
-                "tdd",
-                "--require",
-                "ts-node/register",
-                "./test/**/*.test.js"
-            ],
-            "cwd": "${workspaceRoot}",
-            "preLaunchTask": "ts-build",
-            "runtimeArgs": [
-                "--nolazy"
-            ],
-            "console": "internalConsole",
-            "sourceMaps": true
-        },
-        {
-            "type": "node",
             "request": "attach",
             "name": "Debug running App",
             "address": "localhost",

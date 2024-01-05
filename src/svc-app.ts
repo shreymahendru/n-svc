@@ -1,10 +1,10 @@
-import { Container, ComponentInstaller, Registry } from "@nivinjoseph/n-ject";
-import { InvalidOperationException } from "@nivinjoseph/n-exception";
-import { given } from "@nivinjoseph/n-defensive";
-import { Program } from "./program";
-import { Logger, ConsoleLogger } from "@nivinjoseph/n-log";
 import { ConfigurationManager } from "@nivinjoseph/n-config";
-import { ShutdownManager } from "./shutdown-manager";
+import { given } from "@nivinjoseph/n-defensive";
+import { InvalidOperationException } from "@nivinjoseph/n-exception";
+import { ComponentInstaller, Container, Registry } from "@nivinjoseph/n-ject";
+import { ConsoleLogger, Logger } from "@nivinjoseph/n-log";
+import { Program } from "./program.js";
+import { ShutdownManager } from "./shutdown-manager.js";
 
 
 // public
@@ -22,11 +22,11 @@ export class SvcApp
     private _isCleanUp = false;
     // private _shutdownPromise: Promise<void> | null = null;
     private _shutdownManager!: ShutdownManager;
-    
-    
+
+
     public get containerRegistry(): Registry { return this._container; }
-    
-    
+
+
     public constructor(container?: Container)
     {
         given(container as Container, "container").ensureIsObject().ensureIsType(Container);
@@ -41,8 +41,8 @@ export class SvcApp
             this._ownsContainer = false;
         }
     }
-    
-    
+
+
     public useLogger(logger: Logger): this
     {
         if (this._isBootstrapped)
@@ -53,7 +53,7 @@ export class SvcApp
         this._logger = logger;
         return this;
     }
-    
+
     public useInstaller(installer: ComponentInstaller): this
     {
         if (this._isBootstrapped)
@@ -63,7 +63,7 @@ export class SvcApp
         this._container.install(installer);
         return this;
     }
-    
+
     public registerProgram(programClass: Function): this
     {
         if (this._isBootstrapped || this._programRegistered)
@@ -74,7 +74,7 @@ export class SvcApp
         this._programRegistered = true;
         return this;
     }
-    
+
     public registerDisposeAction(disposeAction: () => Promise<void>): this
     {
         if (this._isBootstrapped)
@@ -92,7 +92,9 @@ export class SvcApp
                         .then(() => resolve())
                         .catch((e) =>
                         {
-                            this._logger.logError(e).finally(() => resolve());
+                            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                            this._logger.logError(e)
+                                .finally(() => resolve());
                             // resolve();
                             // // tslint:disable-next-line
                             // this._logger.logError(e).then(() => resolve());
@@ -100,6 +102,7 @@ export class SvcApp
                 }
                 catch (error)
                 {
+                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
                     this._logger.logError(error as any).finally(() => resolve());
                     // resolve();
                     // // tslint:disable-next-line
@@ -109,7 +112,7 @@ export class SvcApp
         });
         return this;
     }
-    
+
     public bootstrap(): void
     {
         if (this._isBootstrapped || !this._programRegistered)
@@ -120,9 +123,9 @@ export class SvcApp
             this._logger = new ConsoleLogger({
                 useJsonFormat: ConfigurationManager.getConfig<string>("env") !== "dev"
             });
-        
+
         this._configureContainer();
-        
+
         this._configureStartup()
             .then(async () =>
             {
@@ -132,9 +135,9 @@ export class SvcApp
                 const appDescription = ConfigurationManager.getConfig<string>("package.description");
 
                 await this._logger.logInfo(`ENV: ${appEnv}; NAME: ${appName}; VERSION: ${appVersion}; DESCRIPTION: ${appDescription}.`);
-                
+
                 this._configureShutDown();
-                
+
                 const p = this._program.start();
                 this._isBootstrapped = true;
                 await this._logger.logInfo("SERVICE STARTED");
@@ -157,21 +160,21 @@ export class SvcApp
                 process.exit(1);
             });
     }
-    
+
     private _configureContainer(): void
     {
         if (this._ownsContainer)
             this._container.bootstrap();
-        
+
         this.registerDisposeAction(() => this._container.dispose());
     }
-    
+
     private async _configureStartup(): Promise<void>
     {
         await this._logger.logInfo(`SERVICE STARTING...`);
         this._program = this._container.resolve<Program>(this._programKey);
     }
-    
+
     private _configureShutDown(): void
     {
         this.registerDisposeAction(async () =>
@@ -179,8 +182,8 @@ export class SvcApp
             await this._logger.logInfo("CLEANING UP. PLEASE WAIT...");
             // return Delay.seconds(ConfigurationManager.getConfig<string>("env") === "dev" ? 2 : 20);
         });
-        
-        
+
+
         this._shutdownManager = new ShutdownManager(this._logger, [
             async (): Promise<void> =>
             {
@@ -188,7 +191,7 @@ export class SvcApp
                 {
                     await this._logger.logInfo("STOPPING PROGRAM...");
                     await this._program.stop();
-                    await this._logger.logInfo("PROGRAM STOPPED");    
+                    await this._logger.logInfo("PROGRAM STOPPED");
                 }
                 catch (error)
                 {
@@ -198,7 +201,7 @@ export class SvcApp
             },
             (): Promise<any> => this._cleanUp()
         ]);
-        
+
 
         // process.on("SIGTERM", () =>
         // {
@@ -209,21 +212,21 @@ export class SvcApp
         //     this._shutDown("SIGINT").catch(e => console.error(e));
         // });
     }
-    
+
     // private async _shutDown(signal: string): Promise<void>
     // {
     //     console.warn(`SIGNAL RECEIVED (${signal})`);
-        
+
     //     if (this._shutdownPromise == null)
     //         this._shutdownPromise = this._actuallyShutdown(signal);
-        
+
     //     return this._shutdownPromise;
     // }
-    
+
     // private async _actuallyShutdown(signal: string): Promise<void>
     // {
     //     console.warn(`SERVICE STOPPING (${signal})`);
-        
+
     //     if (this._isShutDown)
     //         return;
 
@@ -236,14 +239,14 @@ export class SvcApp
     //     console.warn(`SERVICE STOPPED (${signal})`);
     //     process.exit(0);  
     // }
-    
+
     private async _cleanUp(): Promise<void>
     {
         if (this._isCleanUp)
             return;
 
         this._isCleanUp = true;
-        
+
         await this._logger.logInfo("DISPOSE ACTIONS EXECUTING...");
         try
         {
