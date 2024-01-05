@@ -1,4 +1,4 @@
-import { Container, ComponentInstaller, Registry } from "@nivinjoseph/n-ject";
+import { ComponentInstaller, Container, Registry } from "@nivinjoseph/n-ject";
 import { Logger } from "@nivinjoseph/n-log";
 export declare class SvcApp {
     private readonly _container;
@@ -23,3 +23,4 @@ export declare class SvcApp {
     private _configureShutDown;
     private _cleanUp;
 }
+//# sourceMappingURL=svc-app.d.ts.map

@@ -9,3 +9,4 @@ export declare class ShutdownManager {
     private _initiateShutdown;
     private _actuallyShutdown;
 }
+//# sourceMappingURL=shutdown-manager.d.ts.map

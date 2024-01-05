@@ -1,5 +1,6 @@
 import "@nivinjoseph/n-ext";
-import { SvcApp } from "./svc-app";
-import { Program } from "./program";
-import { ShutdownManager } from "./shutdown-manager";
+import { SvcApp } from "./svc-app.js";
+import { Program } from "./program.js";
+import { ShutdownManager } from "./shutdown-manager.js";
 export { SvcApp, Program, ShutdownManager };
+//# sourceMappingURL=index.d.ts.map
