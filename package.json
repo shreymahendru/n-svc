@@ -46,13 +46,13 @@
         "typescript": "^5.3.3"
     },
     "dependencies": {
-        "@nivinjoseph/n-config": "^1.0.38",
+        "@nivinjoseph/n-config": "^2.0.1",
         "@nivinjoseph/n-defensive": "^2.0.1",
         "@nivinjoseph/n-exception": "^2.0.1",
         "@nivinjoseph/n-ext": "^2.0.1",
-        "@nivinjoseph/n-ject": "^2.0.5",
-        "@nivinjoseph/n-log": "^2.1.8",
-        "@nivinjoseph/n-util": "git+https://github.com/shreymahendru/n-util.git#migration-test"
+        "@nivinjoseph/n-ject": "^3.0.1",
+        "@nivinjoseph/n-log": "^3.0.1",
+        "@nivinjoseph/n-util": "2.0.1"
     },
     "engineStrict": true,
     "engines": {

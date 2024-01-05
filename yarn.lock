@@ -88,26 +88,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-config@npm:^1.0.38":
-  version: 1.0.38
-  resolution: "@nivinjoseph/n-config@npm:1.0.38"
+"@nivinjoseph/n-config@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@nivinjoseph/n-config@npm:2.0.1"
   dependencies:
-    "@nivinjoseph/n-defensive": "npm:^1.0.41"
-    "@nivinjoseph/n-exception": "npm:^1.0.26"
-    "@nivinjoseph/n-ext": "npm:^1.1.36"
-    "@nivinjoseph/n-util": "npm:^1.0.81"
-  checksum: c54e5f4be8cbd1f2d994f63cbfe63774fcb971a0e9f5ff99ce15ce50e46e46049f52fe8ee085389aea9d0822b763f81ba892aae45addbc9bb9a25e2d6d8405b7
-  languageName: node
-  linkType: hard
-
-"@nivinjoseph/n-defensive@npm:^1.0.41, @nivinjoseph/n-defensive@npm:^1.0.44":
-  version: 1.0.44
-  resolution: "@nivinjoseph/n-defensive@npm:1.0.44"
-  dependencies:
-    "@nivinjoseph/n-exception": "npm:^1.0.26"
-    "@nivinjoseph/n-ext": "npm:^1.1.36"
-    tslib: "npm:^2.4.0"
-  checksum: abfe2f8705b75fe521f52687cf7a58fcaa4b05f42d87bef59144e69336ca1d6f79b7fd98e811d7e35a876a07db816760d4f9c216286a062f7f2c2e923c764d99
+    "@nivinjoseph/n-defensive": "npm:^2.0.1"
+    "@nivinjoseph/n-exception": "npm:^2.0.1"
+    "@nivinjoseph/n-ext": "npm:^2.0.1"
+    "@nivinjoseph/n-util": "npm:^2.0.1"
+  checksum: f7062325a3ee09b67c9ad6edace15236584ad0acbaf9f7055b81bfbc5a6342674239eea62d2209b776867cd1bc9372fccfa1c90d68a5a042e50daaf4373939a8
   languageName: node
   linkType: hard
 
@@ -122,16 +111,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-exception@npm:^1.0.26":
-  version: 1.0.26
-  resolution: "@nivinjoseph/n-exception@npm:1.0.26"
-  dependencies:
-    "@nivinjoseph/n-ext": "npm:^1.1.35"
-    tslib: "npm:^2.4.0"
-  checksum: 96118f6a866093add3e9754c9ee7fa9407bdd52f66e1fd8927791ae2d58b28847a9dd59a40c7653ce835586b3f836b489150c06f8465456e034a4e3a066965e6
-  languageName: node
-  linkType: hard
-
 "@nivinjoseph/n-exception@npm:^2.0.1":
   version: 2.0.1
   resolution: "@nivinjoseph/n-exception@npm:2.0.1"
@@ -139,16 +118,6 @@ __metadata:
     "@nivinjoseph/n-ext": "npm:^2.0.1"
     tslib: "npm:^2.6.2"
   checksum: 8555f8890f5b8e06d8bc248ec40ac7cca9f0308574c359aadacec7e57081d7adb8baa8c2d1bda10643a56f5db9c020c348fee49d1b4eedfa01fb2966599aa060
-  languageName: node
-  linkType: hard
-
-"@nivinjoseph/n-ext@npm:^1.1.35, @nivinjoseph/n-ext@npm:^1.1.36":
-  version: 1.1.36
-  resolution: "@nivinjoseph/n-ext@npm:1.1.36"
-  dependencies:
-    buffer: "npm:^6.0.3"
-    tslib: "npm:^2.4.0"
-  checksum: 3b64b93eb6483c7b8c411f64408909be6c58fe96003e5a31a92b4adc6e61f674cf8053893c615756c4f82ab8f47682396ce766e1e475e6d7bc739e70346a3eed
   languageName: node
   linkType: hard
 
@@ -162,34 +131,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-ject@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "@nivinjoseph/n-ject@npm:2.0.5"
+"@nivinjoseph/n-ject@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@nivinjoseph/n-ject@npm:3.0.1"
   dependencies:
-    "@nivinjoseph/n-defensive": "npm:^1.0.41"
-    "@nivinjoseph/n-exception": "npm:^1.0.26"
-    "@nivinjoseph/n-ext": "npm:^1.1.35"
-    "@nivinjoseph/n-util": "npm:^1.0.80"
-    reflect-metadata: "npm:^0.1.13"
-    tslib: "npm:^2.4.0"
-  checksum: 610d9142203d530b87ad3ab4ea3451dbdd544c2d23bf51c65e840feac180b69c3526c36485c3d360d447de1762a4ca56c87e049a5bec9aadb3995ca48cee82b1
+    "@nivinjoseph/n-defensive": "npm:^2.0.1"
+    "@nivinjoseph/n-exception": "npm:^2.0.1"
+    "@nivinjoseph/n-ext": "npm:^2.0.1"
+    "@nivinjoseph/n-util": "npm:^2.0.1"
+    tslib: "npm:^2.6.2"
+  checksum: 1a637d1aa9bf2ee94300f909910628b45683b700692d159f5391c07f72a7ac12902b695bfee84d6dc92d757f9b1b996a2a29a001e2e44f995c65e2bcbf9ff25b
   languageName: node
   linkType: hard
 
-"@nivinjoseph/n-log@npm:^2.1.8":
-  version: 2.1.14
-  resolution: "@nivinjoseph/n-log@npm:2.1.14"
+"@nivinjoseph/n-log@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@nivinjoseph/n-log@npm:3.0.1"
   dependencies:
-    "@nivinjoseph/n-config": "npm:^1.0.38"
-    "@nivinjoseph/n-defensive": "npm:^1.0.41"
-    "@nivinjoseph/n-exception": "npm:^1.0.26"
-    "@nivinjoseph/n-ext": "npm:^1.1.36"
-    "@nivinjoseph/n-util": "npm:^1.0.81"
-    "@opentelemetry/api": "npm:^1.3.0"
-    "@slack/bolt": "npm:^3.12.2"
-    moment: "npm:^2.29.4"
-    moment-timezone: "npm:^0.5.42"
-  checksum: 6dc9258557133cf051e16459502369d2045ef4e8081651ddfde704a982d0ed5ab0dfd145055dfd07d9bdc082017722b78cad93629445d43a7ca69ed63978364f
+    "@nivinjoseph/n-config": "npm:^2.0.1"
+    "@nivinjoseph/n-defensive": "npm:^2.0.1"
+    "@nivinjoseph/n-exception": "npm:^2.0.1"
+    "@nivinjoseph/n-ext": "npm:^2.0.1"
+    "@nivinjoseph/n-util": "npm:^2.0.1"
+    "@opentelemetry/api": "npm:^1.7.0"
+    "@slack/bolt": "npm:^3.17.0"
+    chalk: "npm:^5.3.0"
+    luxon: "npm:^3.4.4"
+  checksum: 766611c1a712d6101334b5641b036b075e5bec31ac1f2a8c43f033e17b1def931b1c76221c232a9a5582c01af5d47aee57c0bbfda9df4e8fd2c06ed387be548a
   languageName: node
   linkType: hard
 
@@ -197,13 +165,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nivinjoseph/n-svc@workspace:."
   dependencies:
-    "@nivinjoseph/n-config": "npm:^1.0.38"
+    "@nivinjoseph/n-config": "npm:^2.0.1"
     "@nivinjoseph/n-defensive": "npm:^2.0.1"
     "@nivinjoseph/n-exception": "npm:^2.0.1"
     "@nivinjoseph/n-ext": "npm:^2.0.1"
-    "@nivinjoseph/n-ject": "npm:^2.0.5"
-    "@nivinjoseph/n-log": "npm:^2.1.8"
-    "@nivinjoseph/n-util": "git+https://github.com/shreymahendru/n-util.git#migration-test"
+    "@nivinjoseph/n-ject": "npm:^3.0.1"
+    "@nivinjoseph/n-log": "npm:^3.0.1"
+    "@nivinjoseph/n-util": "npm:2.0.1"
     "@types/node": "npm:^20.10"
     "@typescript-eslint/eslint-plugin": "npm:^6.15.0"
     "@typescript-eslint/parser": "npm:^6.15.0"
@@ -214,9 +182,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nivinjoseph/n-util@git+https://github.com/shreymahendru/n-util.git#migration-test":
-  version: 1.1.1
-  resolution: "@nivinjoseph/n-util@https://github.com/shreymahendru/n-util.git#commit=cff10ca86a17e47e3126ca7e641caadc095670b4"
+"@nivinjoseph/n-util@npm:2.0.1, @nivinjoseph/n-util@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@nivinjoseph/n-util@npm:2.0.1"
   dependencies:
     "@nivinjoseph/n-defensive": "npm:^2.0.1"
     "@nivinjoseph/n-exception": "npm:^2.0.1"
@@ -226,23 +194,7 @@ __metadata:
     sanitize-html: "npm:^2.11.0"
     tslib: "npm:^2.6.2"
     uuid: "npm:^9.0.1"
-  checksum: 9b8c601397f6023db8f46c63256d9163327f95eb33c8733c9d1238f8745db3f459339a189a09b3f75ed3e58814440960baef96a9568cceb792edbf16cfef26eb
-  languageName: node
-  linkType: hard
-
-"@nivinjoseph/n-util@npm:^1.0.80, @nivinjoseph/n-util@npm:^1.0.81":
-  version: 1.1.1
-  resolution: "@nivinjoseph/n-util@npm:1.1.1"
-  dependencies:
-    "@nivinjoseph/n-defensive": "npm:^1.0.44"
-    "@nivinjoseph/n-exception": "npm:^1.0.26"
-    "@nivinjoseph/n-ext": "npm:^1.1.36"
-    luxon: "npm:^3.4.4"
-    mustache: "npm:^4.2.0"
-    sanitize-html: "npm:^2.11.0"
-    tslib: "npm:^2.4.0"
-    uuid: "npm:^9.0.1"
-  checksum: b32da6dd1aba07a41edb17b08b184feb9eff7eb902eee026c28077d9461d8dbe032369a99264373e89855783040a27184770e909d00b0acf06d422f4f29b53cc
+  checksum: 4215d057c7337abcde90fe9292edf3400a5d5c44c6fb44051e93f0a47edd2d78ff47b08f2bade8cd899fc645444d2e7c6065cdcb0d56d99206cf3aeaa2b323d0
   languageName: node
   linkType: hard
 
@@ -273,14 +225,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/api@npm:^1.3.0":
+"@opentelemetry/api@npm:^1.7.0":
   version: 1.7.0
   resolution: "@opentelemetry/api@npm:1.7.0"
   checksum: b5468115d1cec45dd2b86b39210fdc03620a93b9f07c3d20b14081f75e2f7c9b37ceceeb60d5f35c6d4f9819ae07eee0b4874e53e7362376db21db1e00f483f8
   languageName: node
   linkType: hard
 
-"@slack/bolt@npm:^3.12.2":
+"@slack/bolt@npm:^3.17.0":
   version: 3.17.0
   resolution: "@slack/bolt@npm:3.17.0"
   dependencies:
@@ -937,6 +889,13 @@ __metadata:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 4a3fef5cc34975c898ffe77141450f679721df9dde00f6c304353fa9c8b571929123b26a0e4617bde5018977eb655b31970c297b91b63ee83bb82aeb04666880
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "chalk@npm:5.3.0"
+  checksum: 8297d436b2c0f95801103ff2ef67268d362021b8210daf8ddbe349695333eb3610a71122172ff3b0272f1ef2cf7cc2c41fdaa4715f52e49ffe04c56340feed09
   languageName: node
   linkType: hard
 
@@ -2467,22 +2426,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:^0.5.42":
-  version: 0.5.43
-  resolution: "moment-timezone@npm:0.5.43"
-  dependencies:
-    moment: "npm:^2.29.4"
-  checksum: 6f42174e01398d135883fb45aa820e57f34b25aab5ea6c50998139d06f975ee4457275b5e331466b14bff4d830e681c267f9cc462f445eb9c2b84d04add829f6
-  languageName: node
-  linkType: hard
-
-"moment@npm:^2.29.4":
-  version: 2.30.1
-  resolution: "moment@npm:2.30.1"
-  checksum: 865e4279418c6de666fca7786607705fd0189d8a7b7624e2e56be99290ac846f90878a6f602e34b4e0455c549b85385b1baf9966845962b313699e7cb847543a
-  languageName: node
-  linkType: hard
-
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -2850,13 +2793,6 @@ __metadata:
     iconv-lite: "npm:0.4.24"
     unpipe: "npm:1.0.0"
   checksum: b201c4b66049369a60e766318caff5cb3cc5a900efd89bdac431463822d976ad0670912c931fdbdcf5543207daf6f6833bca57aa116e1661d2ea91e12ca692c4
-  languageName: node
-  linkType: hard
-
-"reflect-metadata@npm:^0.1.13":
-  version: 0.1.14
-  resolution: "reflect-metadata@npm:0.1.14"
-  checksum: 3a6190c7f6cb224f26a012d11f9e329360c01c1945e2cbefea23976a8bacf9db6b794aeb5bf18adcb673c448a234fbc06fc41853c00a6c206b30f0777ecf019e
   languageName: node
   linkType: hard
 
@@ -3257,7 +3193,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
+"tslib@npm:^2.1.0, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb
